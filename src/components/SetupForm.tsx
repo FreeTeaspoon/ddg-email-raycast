@@ -66,11 +66,16 @@ export function SetupForm({
       actions={
         <ActionPanel>
           {hasOtp ? (
-            <Action.SubmitForm title="Sign in" onSubmit={handleSubmit} />
+            <Action
+              title="Sign in"
+              shortcut={{ modifiers: [], key: "return" }}
+              onAction={() => handleSubmit({ username, otp })}
+            />
           ) : (
-            <Action.SubmitForm
+            <Action
               title="Send One-Time Passphrase"
-              onSubmit={handleSubmit}
+              shortcut={{ modifiers: [], key: "return" }}
+              onAction={() => handleSubmit({ username, otp })}
             />
           )}
           {onCancel ? (
