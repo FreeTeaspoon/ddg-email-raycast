@@ -22,6 +22,18 @@
       "title": "Generate and Copy Duck Address",
       "description": "Generate a private DuckDuckGo Email Protection alias and copy it without opening a view",
       "mode": "no-view"
+    },
+    {
+      "name": "create-forwarding-address",
+      "title": "Create Forwarding Address",
+      "description": "Create a DuckDuckGo Email Protection forwarding address for a recipient",
+      "mode": "view"
+    },
+    {
+      "name": "create-copy-forwarding-address",
+      "title": "Create and Copy Forwarding Address",
+      "description": "Create a DuckDuckGo Email Protection forwarding address from the clipboard and copy it",
+      "mode": "no-view"
     }
   ],
   "preferences": [

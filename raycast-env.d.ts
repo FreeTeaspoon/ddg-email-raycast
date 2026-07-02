@@ -22,6 +22,10 @@ declare namespace Preferences {
   export type GenerateAlias = ExtensionPreferences & {}
   /** Preferences accessible in the `generate-copy-alias` command */
   export type GenerateCopyAlias = ExtensionPreferences & {}
+  /** Preferences accessible in the `create-forwarding-address` command */
+  export type CreateForwardingAddress = ExtensionPreferences & {}
+  /** Preferences accessible in the `create-copy-forwarding-address` command */
+  export type CreateCopyForwardingAddress = ExtensionPreferences & {}
 }
 
 declare namespace Arguments {
@@ -29,5 +33,9 @@ declare namespace Arguments {
   export type GenerateAlias = {}
   /** Arguments passed to the `generate-copy-alias` command */
   export type GenerateCopyAlias = {}
+  /** Arguments passed to the `create-forwarding-address` command */
+  export type CreateForwardingAddress = {}
+  /** Arguments passed to the `create-copy-forwarding-address` command */
+  export type CreateCopyForwardingAddress = {}
 }
 
