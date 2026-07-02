@@ -10,15 +10,21 @@ type SetupFormValues = {
 
 type SetupFormProps = {
   defaultUsername?: string;
+  onCancel?: () => void;
   onSubmit: (values: SetupFormValues) => Promise<void>;
 };
 
-export function SetupForm({ defaultUsername, onSubmit }: SetupFormProps) {
+export function SetupForm({
+  defaultUsername,
+  onCancel,
+  onSubmit,
+}: SetupFormProps) {
   const [username, setUsername] = useState(defaultUsername ?? "");
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const hasOtp = otp.trim().length > 0;
 
-  async function handleRequestPassphrase() {
+  async function handleRequestPassphrase(username: string) {
     setIsLoading(true);
 
     try {
@@ -40,6 +46,11 @@ export function SetupForm({ defaultUsername, onSubmit }: SetupFormProps) {
   }
 
   async function handleSubmit(values: SetupFormValues) {
+    if (!values.otp.trim()) {
+      await handleRequestPassphrase(values.username);
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -54,14 +65,17 @@ export function SetupForm({ defaultUsername, onSubmit }: SetupFormProps) {
       isLoading={isLoading}
       actions={
         <ActionPanel>
-          <Action.SubmitForm
-            title="Sign in and Generate Alias"
-            onSubmit={handleSubmit}
-          />
-          <Action
-            title="Send One-Time Passphrase"
-            onAction={handleRequestPassphrase}
-          />
+          {hasOtp ? (
+            <Action.SubmitForm title="Sign in" onSubmit={handleSubmit} />
+          ) : (
+            <Action.SubmitForm
+              title="Send One-Time Passphrase"
+              onSubmit={handleSubmit}
+            />
+          )}
+          {onCancel ? (
+            <Action title="Cancel Setup" onAction={onCancel} />
+          ) : null}
           <Action.OpenInBrowser
             title="Open DuckDuckGo Email Setup"
             url="https://duckduckgo.com/email/start"

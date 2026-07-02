@@ -8,19 +8,43 @@ import {
 } from "@raycast/api";
 import { generateAddress } from "./ddg-api";
 import { getToastOptions } from "./errors";
-import { getStoredSession, saveRecentAlias } from "./storage";
+import {
+  getAccountStore,
+  PREFERENCE_ACCOUNT_ID,
+  saveRecentAlias,
+} from "./storage";
 
-export async function getAccessToken() {
+export async function getSavedTokenContext() {
   const preferences = getPreferenceValues<Preferences>();
-  const session = await getStoredSession();
+  const accountStore = await getAccountStore();
+  const activeAccount = accountStore.accounts.find(
+    (account) => account.id === accountStore.activeAccountId,
+  );
 
-  return preferences.accessToken || session?.accessToken;
+  if (activeAccount) {
+    return {
+      accessToken: activeAccount.accessToken,
+      accountId: activeAccount.id,
+    };
+  }
+
+  if (accountStore.accounts.length === 0 && preferences.accessToken) {
+    return {
+      accessToken: preferences.accessToken,
+      accountId: PREFERENCE_ACCOUNT_ID,
+    };
+  }
+
+  return undefined;
 }
 
-export async function generateCopyAndStoreAlias(accessToken: string) {
+export async function generateCopyAndStoreAlias(
+  accessToken: string,
+  accountId: string,
+) {
   const generated = await generateAddress(accessToken);
   await Clipboard.copy(generated.fullAddress);
-  await saveRecentAlias(generated);
+  await saveRecentAlias(accountId, generated);
 
   return generated;
 }
@@ -33,9 +57,9 @@ export async function launchSetupCommand() {
 }
 
 export async function generateAliasFromSavedToken() {
-  const accessToken = await getAccessToken();
+  const tokenContext = await getSavedTokenContext();
 
-  if (!accessToken) {
+  if (!tokenContext) {
     await showToast({
       style: Toast.Style.Failure,
       title: "No Access Token",
@@ -53,7 +77,10 @@ export async function generateAliasFromSavedToken() {
       style: Toast.Style.Animated,
       title: "Generating Alias",
     });
-    const generated = await generateCopyAndStoreAlias(accessToken);
+    const generated = await generateCopyAndStoreAlias(
+      tokenContext.accessToken,
+      tokenContext.accountId,
+    );
     await showToast({
       style: Toast.Style.Success,
       title: "Alias Copied",

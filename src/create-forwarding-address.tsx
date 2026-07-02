@@ -85,7 +85,6 @@ export default function Command() {
       <Form.TextField
         id="recipientEmail"
         title="Recipient Email"
-        placeholder="brian@gmail.com"
         value={recipientEmail}
         onChange={setRecipientEmail}
         info="The address you want to email from your Duck address."
@@ -93,7 +92,6 @@ export default function Command() {
       <Form.TextField
         id="duckAddress"
         title="Your Duck Address"
-        placeholder="jane"
         value={duckAddress}
         onChange={setDuckAddress}
         info="Your personal Duck address, with or without @duck.com."

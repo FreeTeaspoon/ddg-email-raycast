@@ -13,7 +13,7 @@
   "commands": [
     {
       "name": "generate-alias",
-      "title": "Generate Duck Address",
+      "title": "Open Duck Panel",
       "description": "Generate a private DuckDuckGo Email Protection alias",
       "mode": "view"
     },

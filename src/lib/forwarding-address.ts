@@ -1,6 +1,6 @@
 import { getPreferenceValues } from "@raycast/api";
 import { DdgApiError } from "./errors";
-import { getStoredSession } from "./storage";
+import { getActiveAccount } from "./storage";
 import { normalizeUsername } from "./validation";
 
 const EMAIL_REGEX = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/;
@@ -49,7 +49,7 @@ export function createForwardingAddress(
 
 export async function getDefaultDuckUsername() {
   const preferences = getPreferenceValues<Preferences>();
-  const session = await getStoredSession();
+  const activeAccount = await getActiveAccount();
 
-  return session?.username || preferences.duckAddress || "";
+  return activeAccount?.username || preferences.duckAddress || "";
 }

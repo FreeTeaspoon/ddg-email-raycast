@@ -22,6 +22,16 @@ export type StoredSession = {
   updatedAt: string;
 };
 
+export type StoredAccount = StoredSession & {
+  id: string;
+  label?: string;
+};
+
+export type AccountStore = {
+  accounts: StoredAccount[];
+  activeAccountId?: string;
+};
+
 export type RecentAlias = {
   alias: string;
   fullAddress: string;

@@ -11,7 +11,7 @@ type RecentAliasesProps = {
   aliases: RecentAlias[];
   onGenerate: () => Promise<void>;
   onClearRecentAliases: () => Promise<void>;
-  onClearSession: () => Promise<void>;
+  onRemoveActiveAccount?: () => Promise<void>;
 };
 
 function formatDate(value: string) {
@@ -25,7 +25,7 @@ export function RecentAliases({
   aliases,
   onGenerate,
   onClearRecentAliases,
-  onClearSession,
+  onRemoveActiveAccount,
 }: RecentAliasesProps) {
   return (
     <List.Section title="Recent Aliases" subtitle={`${aliases.length}`}>
@@ -46,12 +46,14 @@ export function RecentAliases({
                 icon={Icon.Gear}
                 onAction={openExtensionPreferences}
               />
-              <Action
-                title="Clear Stored Session"
-                icon={Icon.Trash}
-                style={Action.Style.Destructive}
-                onAction={onClearSession}
-              />
+              {onRemoveActiveAccount ? (
+                <Action
+                  title="Remove Active Account"
+                  icon={Icon.Trash}
+                  style={Action.Style.Destructive}
+                  onAction={onRemoveActiveAccount}
+                />
+              ) : null}
             </ActionPanel>
           }
         />
@@ -83,17 +85,19 @@ export function RecentAliases({
                   onAction={openExtensionPreferences}
                 />
                 <Action
-                  title="Clear Recent Aliases"
+                  title="Clear Recent Aliases for Account"
                   icon={Icon.XMarkCircle}
                   style={Action.Style.Destructive}
                   onAction={onClearRecentAliases}
                 />
-                <Action
-                  title="Clear Stored Session"
-                  icon={Icon.Trash}
-                  style={Action.Style.Destructive}
-                  onAction={onClearSession}
-                />
+                {onRemoveActiveAccount ? (
+                  <Action
+                    title="Remove Active Account"
+                    icon={Icon.Trash}
+                    style={Action.Style.Destructive}
+                    onAction={onRemoveActiveAccount}
+                  />
+                ) : null}
               </ActionPanel>
             }
           />
