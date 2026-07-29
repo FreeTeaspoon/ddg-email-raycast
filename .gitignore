@@ -3,3 +3,4 @@ dist/
 .raycast/
 .DS_Store
 npm-debug.log*
+/files/
